@@ -11,6 +11,7 @@ static int labels_size=0;
 static GPath *s_tick_paths[NUM_CLOCK_TICKS];
 static GPath *s_minute_arrow, *s_hour_arrow;
 static char s_num_buffer[4], s_day_buffer[6];
+static char s_hour_buffer[4], s_minut_buffer[4], s_date_buffer[4], s_month_buffer[4];
 
 static void bg_update_proc(Layer *layer, GContext *ctx) {
   graphics_context_set_fill_color(ctx, GColorBlack);
@@ -59,11 +60,10 @@ static void date_update_proc(Layer *layer, GContext *ctx) {
   time_t now = time(NULL);
   struct tm *t = localtime(&now);
 
-  /*strftime(s_day_buffer, sizeof(s_day_buffer), "%a", t);
-  text_layer_set_text(s_day_label, s_day_buffer);
-
-  strftime(s_num_buffer, sizeof(s_num_buffer), "%d", t);
-  text_layer_set_text(s_num_label, s_num_buffer);*/
+  strftime(s_date_buffer, sizeof(s_date_buffer), "%d", t);
+  strftime(s_month_buffer, sizeof(s_month_buffer), "%m", t);
+  strftime(s_hour_buffer, sizeof(s_hour_buffer), "%H", t);
+  strftime(s_minut_buffer, sizeof(s_minut_buffer), "%M", t);
 }
 
 static void handle_second_tick(struct tm *tick_time, TimeUnits units_changed) {
@@ -88,10 +88,14 @@ static void window_load(Window *window) {
   layer_set_update_proc(s_simple_bg_layer, bg_update_proc);
   layer_add_child(window_layer, s_simple_bg_layer);
 
-  face_label(WINDOW_MAX_WIDTH/2-9, 0,"24");
-  face_label(WINDOW_MAX_WIDTH-9, WINDOW_MAX_HEIGHT/2-11,"6");
-  face_label(WINDOW_MAX_WIDTH/2-9, WINDOW_MAX_HEIGHT-18,"12");
-  face_label(0, WINDOW_MAX_HEIGHT/2-11,"18");
+  face_label(WINDOW_MAX_WIDTH/2-9, 0,s_hour_buffer);
+  face_label(WINDOW_MAX_WIDTH-18, WINDOW_MAX_HEIGHT/2-11,s_month_buffer);
+  face_label(WINDOW_MAX_WIDTH/2-9, WINDOW_MAX_HEIGHT-18,s_minut_buffer);
+  face_label(0, WINDOW_MAX_HEIGHT/2-11,s_date_buffer);
+  //face_label(WINDOW_MAX_WIDTH/2-9, 0,"24");
+  //face_label(WINDOW_MAX_WIDTH-9, WINDOW_MAX_HEIGHT/2-11,"6");
+  //face_label(WINDOW_MAX_WIDTH/2-9, WINDOW_MAX_HEIGHT-18,"12");
+  //face_label(0, WINDOW_MAX_HEIGHT/2-11,"18");
 
   s_date_layer = layer_create(bounds);
   layer_set_update_proc(s_date_layer, date_update_proc);
