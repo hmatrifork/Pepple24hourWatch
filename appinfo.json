@@ -1,0 +1,23 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "shop2@henrikmadsen.net",
+    "longName": "24 hour analog watch",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "24 hour analog watch",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "76f96ba2-42ee-41ea-9401-9c1cad4f9b26",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}
